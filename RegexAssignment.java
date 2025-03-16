@@ -40,11 +40,21 @@ public class RegexAssignment {
     private static String solveProblem(int problemNumber, String input) {
         switch (problemNumber) {
             case 1: return validateMACAddress(input);
+            case 2: return validateAandB(input);
+            case 3: return validateDate(input);
             default: return "Invalid problem number";
         }
     }
 
     private static String validateMACAddress(String input) {
         return input.matches("(^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$)|(^[0-9A-Fa-f]{12}$)") ? "valid" : "invalid";
+    }
+
+    private static String validateAandB(String input) {
+        return input.matches("^(?:b|a(bb|b{3}))*$") ? "valid" : "invalid";
+    }
+
+    private static String validateDate(String input) {
+        return input.matches("^(\\d{4}[-/]\\d{1,2}[-/]\\d{1,2}|\\d{1,2}[-/]\\d{1,2}[-/]\\d{4})$") ? "valid" : "invalid";
     }
 }
