@@ -5,31 +5,36 @@ import java.util.regex.*;
 
 public class HideInfo {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your info: ");
-        String info = scanner.nextLine();
 
-        String sensitve = hideSensitiveInfo(info);
-        System.out.println(sensitve);
+        String filename = "input.txt";
+        processFile(filename);
     }
 
-    private static void processFile(String inputFile, String outputFile) {
-        try (BufferedReader br = new BufferedReader(new FileReader(inputFile));
-             BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile))) {
+    private static void processFile(String filePath) {
+        StringBuilder content = new StringBuilder();
 
+        // Read the content from the file
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                line = line.trim();
-                String sanitizedLine = hideSensitiveInfo(line); // Process line
-                bw.write(sanitizedLine + "\n"); // Write sanitized content
+                content.append(line).append("\n");
             }
-
-            System.out.println("Processing complete. Check " + outputFile);
         } catch (IOException e) {
-            System.err.println("Error processing the file: " + e.getMessage());
+            System.err.println("Error reading the file: " + e.getMessage());
+            return;
+        }
+
+        // Process the content to hide sensitive information
+        String sanitizedContent = hideSensitiveInfo(content.toString());
+
+        // Write the sanitized content back to the same file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            bw.write(sanitizedContent);
+            System.out.println("Processing complete. Check " + filePath);
+        } catch (IOException e) {
+            System.err.println("Error writing to the file: " + e.getMessage());
         }
     }
-
 
     public static String hideSensitiveInfo(String text) {
         //i used \\b ro ensure to take the whole regex as if i found phone num in the IBAN
