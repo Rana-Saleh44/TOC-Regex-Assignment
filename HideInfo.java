@@ -1,11 +1,16 @@
 import java.io.*;
+import java.util.Scanner;
 import java.util.regex.*;
+
 
 public class HideInfo {
     public static void main(String[] args) {
-        String inputFile = "sample_input.txt";
-        String outputFile = "sample_output.txt";
-        processFile(inputFile, outputFile);
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your info: ");
+        String info = scanner.nextLine();
+
+        String sensitve = hideSensitiveInfo(info);
+        System.out.println(sensitve);
     }
 
     private static void processFile(String inputFile, String outputFile) {
@@ -31,7 +36,8 @@ public class HideInfo {
         // it will change the IBAN so this ensure to take it as whole
         String emailRegex = "\\b[\\w.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\\b";
         String phoneRegex = "\\b(010|012|011|015)\\d{8}\\b";
-        //String addressRegex = "";
+        //The mandatory points are : street, Government, Egypt.
+        String addressRegex = "\\b.*?,\\s*(?:Cairo|Giza|Alexandria|Aswan|Luxor|Port Said|Suez|Ismailia|Dakahlia|Sharqia|Minya|Sohag|Qena|Asyut|Faiyum|New Cairo|Downtown Cairo)(?:,\\s*\\d{5})?,\\s*Egypt\\b";
         String accNumRegex = "\\b\\d{4}\\s?\\d{4}\\s?\\d{4}\\s?\\d{5}\\b";
         String IBANRegex = "\\bEG\\d{2}(\\s?\\d{4}){6}\\s?\\d{1}\\b";
 
@@ -43,7 +49,7 @@ public class HideInfo {
         //String asterisk = "*****";
         text= replaceWithAsterisks(text,emailRegex);
         text= replaceWithAsterisks(text,phoneRegex);
-        //text= replaceWithAsterisks(text,addressRegex);
+        text= replaceWithAsterisks(text,addressRegex);
         text= replaceWithAsterisks(text,accNumRegex);
         text= replaceWithAsterisks(text,IBANRegex);
         text= replaceWithAsterisks(text,nationalIDRegex);
