@@ -36,6 +36,7 @@ public class HideInfo {
         }
     }
 
+
     public static String hideSensitiveInfo(String text) {
         //i used \\b ro ensure to take the whole regex as if i found phone num in the IBAN
         // it will change the IBAN so this ensure to take it as whole
